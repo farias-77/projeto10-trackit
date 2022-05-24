@@ -2,12 +2,13 @@ import styled from "styled-components";
 import axios from "axios";
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import logo from "./assets/logo_trackit.png";
 
 export default function Register(){
     
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         email: "",
         password: "",
@@ -19,7 +20,14 @@ export default function Register(){
         e.preventDefault();
         
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", form);
-        
+
+        promise.then(() => {
+            navigate("/");
+        });
+
+        promise.catch(() => {
+            alert("Informações inválidas, por favor, verifique.");
+        })
     }
 
     function handleForm(e){
@@ -36,7 +44,7 @@ export default function Register(){
                 <input onChange={handleForm} type="email" name="email" placeholder="email" value={form.description} required/>
                 <input onChange={handleForm} type="password" name="password" placeholder="senha" value={form.description} required/>
                 <input onChange={handleForm} type="name" name="name" placeholder="nome" value={form.description} required/>
-                <input onChange={handleForm} type="url" name="image" placeholder="foto" value={form.description} />
+                <input onChange={handleForm} type="url" name="image" placeholder="foto" value={form.description} required/>
                 <button type="submit">Cadastrar</button>
             </form>
             <Link to="/" ><p>Já tem uma conta? Faça login!</p></Link>
