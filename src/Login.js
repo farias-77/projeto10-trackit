@@ -5,14 +5,21 @@ import logo from "./assets/logo_trackit.png";
 
 import UserContext from "./contexts/UserContext";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Login() {
 
-    const {token, setToken} = useContext(UserContext);
+    const {userInfo, setUserInfo} = useContext(UserContext);
+    const navigate = useNavigate();
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [buttonText, setButtonText] = useState("Entrar");
+    const [buttonOpacity, setButtonOpacity] = useState(1);
+    const [inputBackground, setInputBackground] = useState("#ffffff");
+    const [inputFontColor, setInputFontColor] = useState("black");
+    const [isDisabled, setIsDisabled] = useState(false);
 
     function sendLogin(e){
         e.preventDefault();
@@ -23,23 +30,33 @@ export default function Login() {
         }
 
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", userLogin);
-        promise.then(validLogin);
-        promise.catch(invalidLogin);
+        setButtonText(<ThreeDots color="white" />);
+        setButtonOpacity(0.6);
+        setInputBackground("#f2f2f2");
+        setInputFontColor("#AFAFAF");
+        setIsDisabled(true);
+
+        promise.then((response) => {
+            setUserInfo({...response.data})
+            navigate("/hoje");
+        });
+
+        promise.catch(() => {
+            setEmail("");
+            setPassword("");
+            setButtonText("Cadastrar");
+            setButtonOpacity(1);
+            setInputBackground("#ffffff");
+            setInputFontColor("black");
+            setIsDisabled(false);
+
+            alert("Login inválido!");
+        });
     }
 
-    function invalidLogin(){
-        setEmail("");
-        setPassword("");
-        alert("Login inválido!");
-    }
-
-    function validLogin(){
-        alert("yessir");
-        //rota /hoje
-    }
 
     return (
-        <Container>
+        <Container opacity={buttonOpacity} inputBackground={inputBackground} inputFontColor={inputFontColor}>
             <img src={logo} alt="logo trackit" />
             <form onSubmit={sendLogin}>
                 <input onChange={e => setEmail(e.target.value)} type="email" placeholder="email" value={email} required/>
@@ -75,18 +92,22 @@ const Container = styled.div`
         width: 303px;
 
         input{
-            background-color: #ffffff;
+            background-color: ${props => props.inputBackground};
             border: 1px solid #D5D5D5;
             border-radius: 5px;
             height: 45px;
             margin-bottom: 5px;
             padding-left: 11px;
-        
+            
+            font-weight: 400;
+            font-size: 19.976px;
+            color: ${props => props.inputFontColor};
+
             ::placeholder{
                 font-weight: 400;
                 font-size: 19.976px;
                 line-height: 25px;
-                color: #DBDBDB;
+                color: #dbdbdb;
             }
         }
 
@@ -96,7 +117,7 @@ const Container = styled.div`
             height: 45px;
             margin-bottom: 25px;
             
-            background-color: #52B6FF;
+            background-color: rgba(82, 182, 255, ${props => props.opacity});
             border-radius: 5px;
 
             font-weight: 400;
@@ -104,6 +125,10 @@ const Container = styled.div`
             line-height: 26px;
             text-align: center;
             color: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 

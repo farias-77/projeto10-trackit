@@ -11,10 +11,10 @@ import UserContext from "./contexts/UserContext";
 
 export default function App(){
     
-    const [token, setToken] = useState("gabigol");
+    const [userInfo, setUserInfo] = useState({});
     
     return (
-        <UserContext.Provider value={{token, setToken}}>
+        <UserContext.Provider value={{userInfo, setUserInfo}}>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />

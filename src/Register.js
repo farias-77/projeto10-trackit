@@ -3,12 +3,18 @@ import axios from "axios";
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 
 import logo from "./assets/logo_trackit.png";
 
 export default function Register(){
     
     const navigate = useNavigate();
+    const [buttonText, setButtonText] = useState("Cadastrar");
+    const [buttonOpacity, setButtonOpacity] = useState(1);
+    const [inputBackground, setInputBackground] = useState("#ffffff");
+    const [inputFontColor, setInputFontColor] = useState("black");
+    const [isDisabled, setIsDisabled] = useState(false);
     const [form, setForm] = useState({
         email: "",
         password: "",
@@ -20,6 +26,11 @@ export default function Register(){
         e.preventDefault();
         
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", form);
+        setButtonText(<ThreeDots color="white" />);
+        setButtonOpacity(0.6);
+        setInputBackground("#f2f2f2");
+        setInputFontColor("#AFAFAF");
+        setIsDisabled(true);
 
         promise.then(() => {
             navigate("/");
@@ -27,6 +38,11 @@ export default function Register(){
 
         promise.catch(() => {
             alert("Informações inválidas, por favor, verifique.");
+            setButtonText("Cadastrar");
+            setButtonOpacity(1);
+            setInputBackground("#ffffff");
+            setInputFontColor("black");
+            setIsDisabled(false);
         })
     }
 
@@ -38,16 +54,16 @@ export default function Register(){
     }
     
     return (
-        <Container>
+        <Container opacity={buttonOpacity} inputBackground={inputBackground} inputFontColor={inputFontColor}>
             <img src={logo} alt="logo trackit" />
             <form onSubmit={sendRegister}>
-                <input onChange={handleForm} type="email" name="email" placeholder="email" value={form.description} required/>
-                <input onChange={handleForm} type="password" name="password" placeholder="senha" value={form.description} required/>
-                <input onChange={handleForm} type="name" name="name" placeholder="nome" value={form.description} required/>
-                <input onChange={handleForm} type="url" name="image" placeholder="foto" value={form.description} required/>
-                <button type="submit">Cadastrar</button>
+                <input onChange={handleForm} disabled={isDisabled} type="email" name="email" placeholder="email" value={form.description} required/>
+                <input onChange={handleForm} disabled={isDisabled} type="password" name="password" placeholder="senha" value={form.description} required/>
+                <input onChange={handleForm} disabled={isDisabled} type="name" name="name" placeholder="nome" value={form.description} required/>
+                <input onChange={handleForm} disabled={isDisabled} type="url" name="image" placeholder="foto" value={form.description} required/>
+                <button type="submit">{buttonText}</button>
             </form>
-            <Link to="/" ><p>Já tem uma conta? Faça login!</p></Link>
+            <Link to="/" ><p>Já tem uma conta? Faça login!</p></Link>  
         </Container>
     )
 }
@@ -76,18 +92,22 @@ const Container = styled.div`
         width: 303px;
 
         input{
-            background-color: #ffffff;
+            background-color: ${props => props.inputBackground};
             border: 1px solid #D5D5D5;
             border-radius: 5px;
             height: 45px;
             margin-bottom: 5px;
             padding-left: 11px;
-        
+            
+            font-weight: 400;
+            font-size: 19.976px;
+            color: ${props => props.inputFontColor};
+
             ::placeholder{
                 font-weight: 400;
                 font-size: 19.976px;
                 line-height: 25px;
-                color: #DBDBDB;
+                color: #dbdbdb;
             }
         }
 
@@ -97,7 +117,7 @@ const Container = styled.div`
             height: 45px;
             margin-bottom: 25px;
             
-            background-color: #52B6FF;
+            background-color: rgba(82, 182, 255, ${props => props.opacity});
             border-radius: 5px;
 
             font-weight: 400;
@@ -105,6 +125,10 @@ const Container = styled.div`
             line-height: 26px;
             text-align: center;
             color: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 
