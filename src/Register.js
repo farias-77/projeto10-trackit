@@ -26,11 +26,7 @@ export default function Register(){
         e.preventDefault();
         
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", form);
-        setButtonText(<ThreeDots color="white" />);
-        setButtonOpacity(0.6);
-        setInputBackground("#f2f2f2");
-        setInputFontColor("#AFAFAF");
-        setIsDisabled(true);
+        setLoading();
 
         promise.then(() => {
             navigate("/");
@@ -38,11 +34,7 @@ export default function Register(){
 
         promise.catch(() => {
             alert("Informações inválidas, por favor, verifique.");
-            setButtonText("Cadastrar");
-            setButtonOpacity(1);
-            setInputBackground("#ffffff");
-            setInputFontColor("black");
-            setIsDisabled(false);
+            setBackLoading();   
         })
     }
 
@@ -53,6 +45,22 @@ export default function Register(){
         });
     }
     
+    function setLoading(){
+        setButtonText(<ThreeDots color="white" />);
+        setButtonOpacity(0.6);
+        setInputBackground("#f2f2f2");
+        setInputFontColor("#AFAFAF");
+        setIsDisabled(true);
+    }
+
+    function setBackLoading(){
+        setButtonText("Cadastrar");
+        setButtonOpacity(1);
+        setInputBackground("#ffffff");
+        setInputFontColor("black");
+        setIsDisabled(false);
+    }
+
     return (
         <Container opacity={buttonOpacity} inputBackground={inputBackground} inputFontColor={inputFontColor}>
             <img src={logo} alt="logo trackit" />

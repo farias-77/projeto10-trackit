@@ -30,11 +30,7 @@ export default function Login() {
         }
 
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", userLogin);
-        setButtonText(<ThreeDots color="white" />);
-        setButtonOpacity(0.6);
-        setInputBackground("#f2f2f2");
-        setInputFontColor("#AFAFAF");
-        setIsDisabled(true);
+        setLoading();
 
         promise.then((response) => {
             setUserInfo({...response.data})
@@ -42,25 +38,35 @@ export default function Login() {
         });
 
         promise.catch(() => {
-            setEmail("");
-            setPassword("");
-            setButtonText("Cadastrar");
-            setButtonOpacity(1);
-            setInputBackground("#ffffff");
-            setInputFontColor("black");
-            setIsDisabled(false);
-
+            setBackLoading();
             alert("Login inválido!");
         });
     }
 
+    function setLoading(){
+        setButtonText(<ThreeDots color="white" />);
+        setButtonOpacity(0.6);
+        setInputBackground("#f2f2f2");
+        setInputFontColor("#AFAFAF");
+        setIsDisabled(true);
+    }
+
+    function setBackLoading(){
+        setEmail("");
+        setPassword("");
+        setButtonText("Cadastrar");
+        setButtonOpacity(1);
+        setInputBackground("#ffffff");
+        setInputFontColor("black");
+        setIsDisabled(false);
+    }
 
     return (
         <Container opacity={buttonOpacity} inputBackground={inputBackground} inputFontColor={inputFontColor}>
             <img src={logo} alt="logo trackit" />
             <form onSubmit={sendLogin}>
-                <input onChange={e => setEmail(e.target.value)} type="email" placeholder="email" value={email} required/>
-                <input onChange={e => setPassword(e.target.value)} type="password" placeholder="senha" value={password} required/>
+                <input onChange={e => setEmail(e.target.value)} disabled={isDisabled} type="email" placeholder="email" value={email} required/>
+                <input onChange={e => setPassword(e.target.value)} disabled={isDisabled} type="password" placeholder="senha" value={password} required/>
                 <button type="submit">Entrar</button>
             </form>
             <Link to="/cadastro" ><p>Não tem uma conta? Cadastre-se!</p></Link>
