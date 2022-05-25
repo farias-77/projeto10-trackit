@@ -81,6 +81,14 @@ const Container = styled.div`
     justify-content: center;
 
     width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    right: 0;
 
     p{
         color: #52B6FF;

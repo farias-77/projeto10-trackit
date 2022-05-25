@@ -166,14 +166,6 @@ export default function Habits(){
             }
         }
         let promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
-
-        promise.then(() => {
-            alert("foi")
-        })
-
-        promise.catch(() => {
-            alert("num foi")
-        })
     }
 
     return(
