@@ -13,7 +13,7 @@ export default function Footer(){
                 <Container>
                     <Link to="/habitos"><p>Hábitos</p></Link>
                     <Link to="/hoje"><p>Hoje</p></Link>
-                    <Link to="/"><p>Histórico</p></Link>
+                    <Link to="/historico"><p>Histórico</p></Link>
                 </Container>
             )
         }else{

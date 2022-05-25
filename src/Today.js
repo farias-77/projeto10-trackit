@@ -4,8 +4,6 @@ import { useContext } from "react";
 export default function Today(){
     
     const { userInfo, setUserInfo} = useContext(UserContext);
-
-    console.log(userInfo)
     
     return (
         <></>
