@@ -80,7 +80,10 @@ export default function Habits(){
 
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", habit, config);
 
-        promise.then(() => {alert("foi")});
+        promise.then(() => {
+            setHabitCreation(false)
+            setWeekdays([false,false,false,false,false,false,false,]);
+        });
         promise.catch(() => {alert("num foi")});
     }
 
@@ -98,7 +101,7 @@ export default function Habits(){
                     <Weekday onClick={() => toggleWeekday(6)} background={() => chooseBackground(6)} color={() => chooseFontColor(6)}>S</Weekday>
                 </Weekdays>
                 <Buttons>
-                    <button onClick={() => setHabitCreation(false)}>Cancelar</button>
+                    <button onClick={resetCreation}>Cancelar</button>
                     <button onClick={saveHabit}>Salvar</button>
                 </Buttons>
             </HabitSetup>
@@ -106,26 +109,36 @@ export default function Habits(){
 
     }
 
+    function resetCreation(){
+        setHabitCreation(false);
+        setWeekdays([false,false,false,false,false,false,false,]);
+    }
+
     function showHabits(){        
-        return (
-            <HabitsContainer>
-            {habits.map((habit) =>
-                    <Habit key={habit.id}>
-                        <p>{habit.name}</p>
-                        <Weekdays>
-                            <Weekday background={() => paintWeekday(0, habit)} color={() => paintFont(0, habit)}>D</Weekday>
-                            <Weekday background={() => paintWeekday(1, habit)} color={() => paintFont(1, habit)}>S</Weekday>
-                            <Weekday background={() => paintWeekday(2, habit)} color={() => paintFont(2, habit)}>T</Weekday>
-                            <Weekday background={() => paintWeekday(3, habit)} color={() => paintFont(3, habit)}>Q</Weekday>
-                            <Weekday background={() => paintWeekday(4, habit)} color={() => paintFont(4, habit)}>Q</Weekday>
-                            <Weekday background={() => paintWeekday(5, habit)} color={() => paintFont(5, habit)}>S</Weekday>
-                            <Weekday background={() => paintWeekday(6, habit)} color={() => paintFont(6, habit)}>S</Weekday>
-                        </Weekdays>
-                        <img src={trashcan} alt="excluir" onClick={() => deleteHabit(habit.id)}/>
-                    </Habit>
+        
+        if(habits.length !== 0){
+            return (
+                <HabitsContainer>
+                {habits.map((habit) =>
+                        <Habit key={habit.id}>
+                            <p>{habit.name}</p>
+                            <Weekdays>
+                                <Weekday background={() => paintWeekday(0, habit)} color={() => paintFont(0, habit)}>D</Weekday>
+                                <Weekday background={() => paintWeekday(1, habit)} color={() => paintFont(1, habit)}>S</Weekday>
+                                <Weekday background={() => paintWeekday(2, habit)} color={() => paintFont(2, habit)}>T</Weekday>
+                                <Weekday background={() => paintWeekday(3, habit)} color={() => paintFont(3, habit)}>Q</Weekday>
+                                <Weekday background={() => paintWeekday(4, habit)} color={() => paintFont(4, habit)}>Q</Weekday>
+                                <Weekday background={() => paintWeekday(5, habit)} color={() => paintFont(5, habit)}>S</Weekday>
+                                <Weekday background={() => paintWeekday(6, habit)} color={() => paintFont(6, habit)}>S</Weekday>
+                            </Weekdays>
+                            <img src={trashcan} alt="excluir" onClick={() => deleteHabit(habit.id)}/>
+                        </Habit>
+                )}
+                </HabitsContainer>
+            )}else{
+                return(
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
             )}
-            </HabitsContainer>
-        )
     }
 
     function paintWeekday(dayNumber, habit){
@@ -170,7 +183,7 @@ export default function Habits(){
                 <button onClick={() => setHabitCreation(true)}>+</button>
             </Header>
             {habitCreation ? createHabit() : <></>}
-            {aux ? showHabits() : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>}
+            {aux ? showHabits() : <p>Loading...</p>}
         </Container>
     )
 }
