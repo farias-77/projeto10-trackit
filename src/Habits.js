@@ -13,16 +13,13 @@ export default function Habits(){
     const [newHabitWeekdays, setNewHabitWeekdays] = useState([]);
     const [weekdays, setWeekdays] = useState([false,false,false,false,false,false,false,]);
     const [aux, setAux] = useState(false);
-    const habitsDisplay = showHabits();
 
-    useEffect(() => {
-        
+    useEffect(() => {        
         const config = {
             headers: {
                 "Authorization": `Bearer ${userInfo.token}`,
             }
         }
-        
 
         let promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config);
         promise.then((response) => {
@@ -48,9 +45,7 @@ export default function Habits(){
             setWeekdays(weekdays.map((day,index) => 
                 index === dayIndex ? false : day
             ));
-        }
-        
-        
+        }   
     }
 
     function chooseBackground(dayIndex){
@@ -126,7 +121,7 @@ export default function Habits(){
                             <Weekday background={() => paintWeekday(5, habit)} color={() => paintFont(5, habit)}>S</Weekday>
                             <Weekday background={() => paintWeekday(6, habit)} color={() => paintFont(6, habit)}>S</Weekday>
                         </Weekdays>
-                        <img src={trashcan} alt="excluir" />
+                        <img src={trashcan} alt="excluir" onClick={() => deleteHabit(habit.id)}/>
                     </Habit>
             )}
             </HabitsContainer>
@@ -149,6 +144,23 @@ export default function Habits(){
         }else{
             return "#dbdbdb";
         }
+    }
+
+    function deleteHabit(id){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${userInfo.token}`,
+            }
+        }
+        let promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
+
+        promise.then(() => {
+            alert("foi")
+        })
+
+        promise.catch(() => {
+            alert("num foi")
+        })
     }
 
     return(
