@@ -13,6 +13,7 @@ export default function Habits(){
     const [newHabitWeekdays, setNewHabitWeekdays] = useState([]);
     const [weekdays, setWeekdays] = useState([false,false,false,false,false,false,false,]);
     const [aux, setAux] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {        
         const config = {
@@ -86,9 +87,11 @@ export default function Habits(){
         }
 
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", habit, config);
+        setIsDisabled(true);
 
         promise.then(() => {
-            setHabitCreation(false)
+            setHabitCreation(false);
+            setIsDisabled(false);
             setWeekdays([false,false,false,false,false,false,false,]);
         });
     }
@@ -96,7 +99,7 @@ export default function Habits(){
     function createHabit(){
         return(
             <HabitSetup>
-                <input onChange={e => setNewHabitName(e.target.value)} placeholder="nome do hábito" />
+                <input onChange={e => setNewHabitName(e.target.value)} placeholder="nome do hábito" disabled={isDisabled} />
                 <Weekdays>
                     <Weekday onClick={() => toggleWeekday(0)} background={() => chooseBackground(0)} color={() => chooseFontColor(0)}>D</Weekday>
                     <Weekday onClick={() => toggleWeekday(1)} background={() => chooseBackground(1)} color={() => chooseFontColor(1)}>S</Weekday>
