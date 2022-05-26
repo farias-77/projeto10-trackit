@@ -4,16 +4,16 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import axios from "axios";
 import check from "./assets/check.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-export default function Today({donePerc, setDonePerc}){   
+export default function Today(){   
     const browserDate = new Date();      //retorna a data em formato definido pelo navegador(?)
     const weekdayIndex = browserDate.getDay();    //retorna o dia da semana (0-6)
     const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
     const todayWeek = weekdays[weekdayIndex];
     const todayYear = dayjs(browserDate).format("DD/MM");  
 
-    const { userInfo, setUserInfo} = useContext(UserContext);
+    const { userInfo, donePerc, setDonePerc} = useContext(UserContext);
     const [habits, setHabits] = useState([]);
     const [doneHabits, setDoneHabits] = useState([]);
     const [aux, setAux] = useState(false);

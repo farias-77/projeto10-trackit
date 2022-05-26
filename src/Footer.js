@@ -5,26 +5,11 @@ import { useContext } from "react";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export default function Footer({donePerc}){
+export default function Footer(){
     
-    const { userInfo, setUserInfo } = useContext(UserContext); 
-    const footer = displayFooter();
+    const { userInfo, donePerc} = useContext(UserContext); 
 
     function displayFooter(){
-        if(userInfo.token !== ""){
-            return (
-                <Container>
-                    <Link to="/habitos"><p>Hábitos</p></Link>
-                    <Link to="/hoje"><p>Hoje</p></Link>
-                    <Link to="/historico"><p>Histórico</p></Link>
-                </Container>
-            )
-        }else{
-            return (<></>)
-        }
-    }
-
-    function displayFooter2(){
         if(userInfo.token !== ""){
             return (
                 <Container>
@@ -48,7 +33,7 @@ export default function Footer({donePerc}){
 
 
     return (
-        displayFooter2()
+        displayFooter()
     )
 }
 

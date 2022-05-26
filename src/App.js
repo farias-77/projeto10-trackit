@@ -27,14 +27,14 @@ export default function App(){
     const [donePerc, setDonePerc] = useState(0);
     
     return (
-        <UserContext.Provider value={{userInfo, setUserInfo}}>
+        <UserContext.Provider value={{userInfo, setUserInfo, donePerc, setDonePerc}}>
         <BrowserRouter>
             <Header />
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/cadastro" element={<Register />} />
                 <Route path="/habitos" element={<Habits />} /> 
-                <Route path="/hoje" element={<Today donePerc={donePerc} setDonePerc={setDonePerc} />} />
+                <Route path="/hoje" element={<Today />} />
                 <Route path="/historico" element={<Records />} />
             </Routes>
             <Footer donePerc={donePerc} />
