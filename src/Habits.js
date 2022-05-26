@@ -163,13 +163,15 @@ export default function Habits(){
         }
     }
 
-    function deleteHabit(id){
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${userInfo.token}`,
+    function deleteHabit(id){       
+        if(window.confirm("Tem certeza que deseja apagar o hábito?")){
+            const config = {
+                headers: {
+                    "Authorization": `Bearer ${userInfo.token}`,
+                }
             }
+            let promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
         }
-        let promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
     }
 
     return(
