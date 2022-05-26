@@ -259,6 +259,10 @@ const Container = styled.div`
     padding: 0 20px;
     padding-top: 22px;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     p{
         font-weight: 400;
         font-size: 17.976px;
@@ -268,10 +272,12 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    padding: 0 20px;
 
     p{
         font-weight: 400;

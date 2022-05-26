@@ -54,7 +54,7 @@ export default function Login() {
     function setBackLoading(){
         setEmail("");
         setPassword("");
-        setButtonText("Cadastrar");
+        setButtonText("Entrar");
         setButtonOpacity(1);
         setInputBackground("#ffffff");
         setInputFontColor("black");
@@ -67,7 +67,7 @@ export default function Login() {
             <form onSubmit={sendLogin}>
                 <input onChange={e => setEmail(e.target.value)} disabled={isDisabled} type="email" placeholder="email" value={email} required/>
                 <input onChange={e => setPassword(e.target.value)} disabled={isDisabled} type="password" placeholder="senha" value={password} required/>
-                <button type="submit">Entrar</button>
+                <button type="submit">{buttonText}</button>
             </form>
             <Link to="/cadastro" ><p>Não tem uma conta? Cadastre-se!</p></Link>
         </Container>

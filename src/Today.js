@@ -62,15 +62,17 @@ export default function Today(){
             promise.then(() => {
                 habit.done = true;
                 habit.currentSequence = habit.currentSequence + 1;
-                verifyRecord(habit);
                 setHabits([...habits]);
             })
         } 
     }
 
     function verifyRecord(habit){
-        if(habit.currentSequence > habit.highestSequence){
+        if(habit.currentSequence === habit.highestSequence && habit.currentSequence > 0){
             habit.highestSequence = habit.currentSequence;
+            return "#8FC549";
+        }else{
+            return "#666666";
         }
     }
 
@@ -97,7 +99,7 @@ export default function Today(){
             <HabitsContainer>
                 {!aux ? "Loading..." : habits.map((habit, index) =>
                     <Habit key={index}>
-                        <HabitInfo textColor={() => checkTextColor(habit)} >
+                        <HabitInfo textColor={() => checkTextColor(habit)} recordColor={() => verifyRecord(habit)}>
                             <h4>{habit.name}</h4>
                             <p>Sequência atual: {habit.currentSequence} dia(s)</p>
                             <p>Seu recorde: {habit.highestSequence} dia(s)</p>
@@ -163,13 +165,15 @@ const HabitInfo = styled.div`
     }
     
     p:nth-child(2){
+        font-size: 12.976px;
+        line-height: 16px;
         color: ${props => props.textColor};
     }
     
-    p{
+    p:last-child{
         font-size: 12.976px;
         line-height: 16px;
-        color: #666666;
+        color: ${props => props.recordColor};
     }
     
 `;

@@ -84,6 +84,13 @@ const Container = styled.div`
 
     width: 100%;
 
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #ffffff;
+
     p{
         color: #52B6FF;
         font-weight: 400;
