@@ -6,7 +6,7 @@ import axios from "axios";
 import check from "./assets/check.png";
 import { useState, useEffect } from "react";
 
-export default function Today(){   
+export default function Today({donePerc, setDonePerc}){   
     const browserDate = new Date();      //retorna a data em formato definido pelo navegador(?)
     const weekdayIndex = browserDate.getDay();    //retorna o dia da semana (0-6)
     const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
@@ -17,7 +17,7 @@ export default function Today(){
     const [habits, setHabits] = useState([]);
     const [doneHabits, setDoneHabits] = useState([]);
     const [aux, setAux] = useState(false);
-    const [donePerc, setDonePerc] = useState(0);
+    
     
     useEffect(() => {
         const config = {

@@ -24,6 +24,7 @@ export default function App(){
         password: "",
         token: "",
     });
+    const [donePerc, setDonePerc] = useState(0);
     
     return (
         <UserContext.Provider value={{userInfo, setUserInfo}}>
@@ -33,10 +34,10 @@ export default function App(){
                 <Route path="/" element={<Login />} />
                 <Route path="/cadastro" element={<Register />} />
                 <Route path="/habitos" element={<Habits />} /> 
-                <Route path="/hoje" element={<Today />} />
+                <Route path="/hoje" element={<Today donePerc={donePerc} setDonePerc={setDonePerc} />} />
                 <Route path="/historico" element={<Records />} />
             </Routes>
-            <Footer />
+            <Footer donePerc={donePerc} />
         </BrowserRouter>
         </UserContext.Provider>  
     )

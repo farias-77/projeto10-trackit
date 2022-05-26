@@ -2,12 +2,15 @@ import styled from "styled-components"
 import { Link } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import { useContext } from "react";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
-export default function Footer(){
+export default function Footer({donePerc}){
     
     const { userInfo, setUserInfo } = useContext(UserContext); 
+    const footer = displayFooter();
 
-    function showFooter(){
+    function displayFooter(){
         if(userInfo.token !== ""){
             return (
                 <Container>
@@ -20,12 +23,40 @@ export default function Footer(){
             return (<></>)
         }
     }
-    
-    
+
+    function displayFooter2(){
+        if(userInfo.token !== ""){
+            return (
+                <Container>
+                    <Link to="/habitos"><p>Hábitos</p></Link>
+                    <Link to="/hoje"><ProgressBarWidth><CircularProgressbar value={donePerc} text="Hoje" background backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#3e98c7",
+                            textColor: "#fff",
+                            pathColor: "#fff",
+                            trailColor: "transparent"
+                        })}
+                    /></ProgressBarWidth></Link>
+                    <Link to="/historico"><p>Histórico</p></Link>
+                    
+                </Container>
+            )
+        }else{
+            return (<></>)
+        }
+    }
+
+
     return (
-        showFooter()
+        displayFooter2()
     )
 }
+
+const ProgressBarWidth = styled.div`
+    width: 91px;
+    height: 91px;
+    margin-bottom: 40px;
+`
 
 const Container = styled.div`
     width: 100%;
