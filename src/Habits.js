@@ -61,7 +61,18 @@ export default function Habits(){
     }
 
     function saveHabit(){
+        if(newHabitName === ""){
+            alert("Por favor, escolha um nome para o hábito.")
+            return;
+        }
+        
         let habitDays = weekdays.map((day, index) => day ? index : null).filter(day => day !== null);
+
+        if(habitDays.length === 0){
+            alert("Por favor, escolha os dias em que deseja executar o hábito.");
+            return;
+        }
+        
         
         const habit = {
             name: newHabitName,
@@ -80,13 +91,12 @@ export default function Habits(){
             setHabitCreation(false)
             setWeekdays([false,false,false,false,false,false,false,]);
         });
-        promise.catch(() => {alert("num foi")});
     }
 
     function createHabit(){
         return(
             <HabitSetup>
-                <input onChange={e => setNewHabitName(e.target.value)}placeholder="nome do hábito" />
+                <input onChange={e => setNewHabitName(e.target.value)} placeholder="nome do hábito" />
                 <Weekdays>
                     <Weekday onClick={() => toggleWeekday(0)} background={() => chooseBackground(0)} color={() => chooseFontColor(0)}>D</Weekday>
                     <Weekday onClick={() => toggleWeekday(1)} background={() => chooseBackground(1)} color={() => chooseFontColor(1)}>S</Weekday>
@@ -97,17 +107,12 @@ export default function Habits(){
                     <Weekday onClick={() => toggleWeekday(6)} background={() => chooseBackground(6)} color={() => chooseFontColor(6)}>S</Weekday>
                 </Weekdays>
                 <Buttons>
-                    <button onClick={resetCreation}>Cancelar</button>
+                    <button onClick={() => setHabitCreation(false)}>Cancelar</button>
                     <button onClick={saveHabit}>Salvar</button>
                 </Buttons>
             </HabitSetup>
         )
 
-    }
-
-    function resetCreation(){
-        setHabitCreation(false);
-        setWeekdays([false,false,false,false,false,false,false,]);
     }
 
     function showHabits(){        
