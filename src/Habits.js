@@ -26,10 +26,6 @@ export default function Habits(){
             setHabits([...response.data]);
             setAux(true);
         });
-
-        promise.catch(() => {
-            console.log("deu ruim");
-        })
     })
 
     useEffect(() => {

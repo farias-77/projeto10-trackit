@@ -43,12 +43,35 @@ export default function Today(){
     }, [doneHabits]);
 
     function checkHabit(habit){
-        if(habit.done === true){
-            habit.done = false;
-        }else{
-            habit.done = true;
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${userInfo.token}`,
+            }
         }
-        setHabits([...habits]); 
+
+        if(habit.done === true){
+            let promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, null, config);
+            promise.then(() => {
+                habit.done = false;
+                habit.currentSequence = habit.currentSequence - 1;
+                setHabits([...habits]);
+            })
+
+        }else{
+            let promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, null, config);
+            promise.then(() => {
+                habit.done = true;
+                habit.currentSequence = habit.currentSequence + 1;
+                verifyRecord(habit);
+                setHabits([...habits]);
+            })
+        } 
+    }
+
+    function verifyRecord(habit){
+        if(habit.currentSequence > habit.highestSequence){
+            habit.highestSequence = habit.currentSequence;
+        }
     }
 
     function checkBackground(habit){
@@ -59,19 +82,29 @@ export default function Today(){
         }
     }
 
+    function checkTextColor(habit){
+        if(habit.done === true){
+            return "#8FC549";
+        }else{
+            return "#666666";
+        }
+    }
+
     return (
         <Container>
             <Day>{todayWeek}, {todayYear}</Day>
-            <TodayStatus color={ donePerc > 0 ? "#8FC549" : "#BABABA"} >{ donePerc > 0 ? `${donePerc}% dos hábitos concluídos` : "Nenhum hábito concluído ainda" }</TodayStatus>            
-            {!aux ? "Loading..." : habits.map((habit, index) =>
-                <Habit key={index}>
-                    <HabitInfo>
-                        <h4>{habit.name}</h4>
-                        <p>Sequência atual: {habit.currentSequence} dia(s)</p>
-                        <p>Seu recorded: {habit.highestSequence} dia(s)</p>
-                    </HabitInfo>
-                    <Check onClick ={()=>checkHabit(habit)} background={()=>checkBackground(habit)} ><img src={check} alt="check" /></Check>
-                </Habit>)}            
+            <TodayStatus color={ donePerc > 0 ? "#8FC549" : "#BABABA"} >{ donePerc > 0 ? `${donePerc.toFixed(0)}% dos hábitos concluídos` : "Nenhum hábito concluído ainda" }</TodayStatus>            
+            <HabitsContainer>
+                {!aux ? "Loading..." : habits.map((habit, index) =>
+                    <Habit key={index}>
+                        <HabitInfo textColor={() => checkTextColor(habit)} >
+                            <h4>{habit.name}</h4>
+                            <p>Sequência atual: {habit.currentSequence} dia(s)</p>
+                            <p>Seu recorde: {habit.highestSequence} dia(s)</p>
+                        </HabitInfo>
+                        <Check onClick ={()=>checkHabit(habit)} background={()=>checkBackground(habit)} ><img src={check} alt="check" /></Check>
+                    </Habit>)}
+            </HabitsContainer>            
         </Container>
     )
 }
@@ -121,18 +154,24 @@ const HabitInfo = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
     font-weight: 400;
     color: #666666;
     h4{
         font-size: 19.976px;
         line-height: 25px;
+        color: #666666;
     }
-
+    
+    p:nth-child(2){
+        color: ${props => props.textColor};
+    }
+    
     p{
         font-size: 12.976px;
         line-height: 16px;
+        color: #666666;
     }
+    
 `;
 
 const Check = styled.div`
@@ -150,4 +189,12 @@ const Check = styled.div`
     img{
         width: 35px;
     }
+
+    cursor: pointer;
 `;
+
+const HabitsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
