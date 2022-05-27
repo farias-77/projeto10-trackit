@@ -61,6 +61,9 @@ export default function Today(){
             promise.then(() => {
                 habit.done = true;
                 habit.currentSequence = habit.currentSequence + 1;
+                if(habit.currentSequence >= habit.highestSequence){
+                    habit.highestSequence = habit.currentSequence;
+                }
                 setHabits([...habits]);
             })
         } 
