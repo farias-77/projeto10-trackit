@@ -2,18 +2,19 @@ import UserContext from "./contexts/UserContext";
 import styled from "styled-components";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import trashcan from "./assets/trashcan.png";
 
 export default function Habits(){
 
-    const {userInfo, setUserInfo} = useContext(UserContext);
+    const {userInfo} = useContext(UserContext);
     const [habits, setHabits] = useState([]);
     const [habitCreation, setHabitCreation] = useState(false);
     const [newHabitName, setNewHabitName] = useState("");
-    const [newHabitWeekdays, setNewHabitWeekdays] = useState([]);
     const [weekdays, setWeekdays] = useState([false,false,false,false,false,false,false,]);
     const [aux, setAux] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [saveOrLoading, setSaveOrLoading] = useState("Salvar");
 
     useEffect(() => {        
         const config = {
@@ -88,11 +89,13 @@ export default function Habits(){
 
         let promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", habit, config);
         setIsDisabled(true);
+        setSaveOrLoading(<ThreeDots color="white" />);
 
         promise.then(() => {
             setHabitCreation(false);
             setIsDisabled(false);
             setWeekdays([false,false,false,false,false,false,false,]);
+            setSaveOrLoading("Salvar");
         });
     }
 
@@ -111,7 +114,7 @@ export default function Habits(){
                 </Weekdays>
                 <Buttons>
                     <button onClick={() => setHabitCreation(false)}>Cancelar</button>
-                    <button onClick={saveHabit}>Salvar</button>
+                    <button onClick={saveHabit}>{saveOrLoading}</button>
                 </Buttons>
             </HabitSetup>
         )
